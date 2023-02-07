@@ -32,7 +32,7 @@ const Enter: NextPage = () => {
 
   const onValid = (validForm: EnterForm) => {
     if (loading) return;
-    enter(data);
+    enter(validForm);
   };
 
   return (
