@@ -34,12 +34,12 @@ const handler = async (
   });
 
   if (phone) {
-    const message = await twilioClient.messages.create({
-      messagingServiceSid: process.env.MESSAGING_SERVICES_SID,
-      to: process.env.MY_PHONE!,
-      body: `Your Login Token is ${payload}`,
-    });
-    console.log(message);
+    // const message = await twilioClient.messages.create({
+    //   messagingServiceSid: process.env.MESSAGING_SERVICES_SID,
+    //   to: process.env.MY_PHONE!,
+    //   body: `Your Login Token is ${payload}`,
+    // });
+    // console.log(message);
   }
 
   return res.json({ ok: true });
