@@ -1,0 +1,53 @@
+import client from "@libs/server/client";
+import withHandler, { ResponseType } from "@libs/server/withHandler";
+import { NextApiRequest, NextApiResponse } from "next";
+import { withApiSession } from "@libs/server/withSession";
+
+const handler = async (
+  req: NextApiRequest,
+  res: NextApiResponse<ResponseType>,
+) => {
+  const { id } = req.query;
+  const { user } = req.session;
+
+  const alreadyExists = await client.fav.findFirst({
+    where: {
+      productId: Number(id),
+      userId: user?.id,
+    },
+  });
+
+  if (alreadyExists) {
+    // delete
+    await client.fav.deleteMany({
+      where: {
+        userId: user?.id,
+      },
+    });
+  } else {
+    // create
+    await client.fav.create({
+      data: {
+        user: {
+          connect: {
+            id: user?.id,
+          },
+        },
+        product: {
+          connect: {
+            id: Number(id),
+          },
+        },
+      },
+    });
+  }
+
+  res.json({ ok: true });
+};
+
+export default withApiSession(
+  withHandler({
+    methods: ["POST"],
+    handler,
+  }),
+);
