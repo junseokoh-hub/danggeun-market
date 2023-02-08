@@ -25,10 +25,14 @@ const ItemDetail: NextPage = () => {
     router.query.id ? `/api/products/${router.query.id}` : null,
   );
   const [toggleFav] = useMutation(`/api/products/${router.query.id}/fav`);
+
   // Optimistic UI
 
   const onFavClick = () => {
     toggleFav({});
+    if (!data) return;
+
+    mutate({ ...data, isLiked: !data.isLiked }, false);
   };
 
   return (
