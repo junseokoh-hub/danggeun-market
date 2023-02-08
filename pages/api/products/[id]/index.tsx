@@ -8,6 +8,7 @@ const handler = async (
   res: NextApiResponse<ResponseType>,
 ) => {
   const { id } = req.query;
+  const { user } = req.session;
 
   const product = await client.product.findUnique({
     where: {
@@ -40,9 +41,19 @@ const handler = async (
     },
   });
 
-  console.log(relatedProducts);
+  const isLiked = Boolean(
+    await client.fav.findFirst({
+      where: {
+        productId: product?.id,
+        userId: user?.id,
+      },
+      select: {
+        id: true,
+      },
+    }),
+  );
 
-  res.json({ ok: true, product, relatedProducts });
+  res.json({ ok: true, product, relatedProducts, isLiked });
 };
 
 export default withApiSession(
