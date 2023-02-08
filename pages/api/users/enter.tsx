@@ -46,7 +46,7 @@ const handler = async (
 };
 
 export default withHandler({
-  method: "POST",
+  methods: ["POST"],
   handler,
   isPrivate: false,
 });
