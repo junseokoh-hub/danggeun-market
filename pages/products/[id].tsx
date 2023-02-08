@@ -32,7 +32,7 @@ const ItemDetail: NextPage = () => {
   // Optimistic UI
 
   const onFavClick = () => {
-    // toggleFav({});
+    toggleFav({});
     if (!data) return;
 
     boundMutate((prev) => prev && { ...prev, isLiked: !prev.isLiked }, false);
