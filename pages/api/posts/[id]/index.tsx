@@ -8,6 +8,7 @@ const handler = async (
   res: NextApiResponse<ResponseType>,
 ) => {
   const { id } = req.query;
+  const { user } = req.session;
 
   const post = await client.post.findUnique({
     where: {
@@ -43,7 +44,19 @@ const handler = async (
     },
   });
 
-  res.json({ ok: true, post });
+  const isCurious = Boolean(
+    await client.curiosity.findFirst({
+      where: {
+        postId: Number(id),
+        userId: user?.id,
+      },
+      select: {
+        id: true,
+      },
+    }),
+  );
+
+  res.json({ ok: true, post, isCurious });
 };
 
 export default withApiSession(
