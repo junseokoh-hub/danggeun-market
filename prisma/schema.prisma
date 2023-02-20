@@ -77,9 +77,9 @@ model Post {
   userId      Int
   question    String   @db.MediumText
   latitude    Float?
-  longitude    Float?
+  longitude   Float?
   answers     Answer[]
-  curiosities   Curiosity[]
+  curiosities Curiosity[]
 
   @@index([userId])
 }
@@ -92,7 +92,7 @@ model Answer {
   userId      Int
   post        Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId      Int
-  answer    String   @db.MediumText
+  answer      String   @db.MediumText
 
   @@index([userId])
   @@index([postId])
